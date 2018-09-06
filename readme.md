@@ -1,89 +1,89 @@
-# springbootdemo
-springboot的demo项目
+# springbootdemo  
+springboot的demo项目  
 
-1.创建springboot项目
-https://start.spring.io/
-group com.zhenzhen.demo
-Artifact springboot
-Search for dependencies 
-web,mysql,jdbc,redis
+1.创建springboot项目   
+https://start.spring.io/   
+group com.zhenzhen.demo   
+Artifact springboot   
+Search for dependencies    
+web,mysql,jdbc,redis   
 
-2.拆分环境test、dev、prod
-application.properties 重命名为application.yml
-复制三份
-application.yml
-spring:
-  profiles:
-    active: dev
-application-dev.yml
-application-test.yml
-application-prod.yml
-java -jar xxx.jar --spring.profiles.active=dev
+2.拆分环境test、dev、prod   
+application.properties 重命名为application.yml   
+复制三份   
+application.yml   
+spring:   
+  profiles:   
+    active: dev   
+application-dev.yml   
+application-test.yml   
+application-prod.yml    
+java -jar xxx.jar --spring.profiles.active=dev    
 
-3.跳过测试
-<plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-surefire-plugin</artifactId>
-	<configuration>
-		<skipTests>true</skipTests>
-	</configuration>
-</plugin>
+3.跳过测试   
+<plugin>   
+	<groupId>org.apache.maven.plugins</groupId>   
+	<artifactId>maven-surefire-plugin</artifactId>   
+	<configuration>   
+		<skipTests>true</skipTests>   
+	</configuration>   
+</plugin>   
 
-4.热部署
+4.热部署   
+<dependency>  
+    <groupId>org.springframework.boot</groupId>  
+    <artifactId>spring-boot-devtools</artifactId>  
+    <optional>true</optional><!-- optional=true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 -->   
+</dependency>     
+
+5.使用swagger   
 <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-devtools</artifactId>
-    <optional>true</optional><!-- optional=true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 -->
-</dependency>
+	<groupId>io.springfox</groupId>  
+	<artifactId>springfox-swagger2</artifactId>   
+	<version>2.8.0</version>   
+</dependency>   
+<dependency>   
+	<groupId>io.springfox</groupId>   
+	<artifactId>springfox-swagger-ui</artifactId>   
+	<version>2.8.0</version>   
+</dependency>   
 
-5.使用swagger
-<dependency>
-	<groupId>io.springfox</groupId>
-	<artifactId>springfox-swagger2</artifactId>
-	<version>2.8.0</version>
-</dependency>
-<dependency>
-	<groupId>io.springfox</groupId>
-	<artifactId>springfox-swagger-ui</artifactId>
-	<version>2.8.0</version>
-</dependency>
+APP上加註解@EnableSwagger2   
+类上使用   
+@Api(description = "客服的控制器")   
+方法上   
+@ApiOperation(value="测试连通")   
+参数对象的属性上   
+@ApiModelProperty("企业ID不能为空")   
+参数对象上   
+@ApiModel("demoDto测试")   
+参数上   
+@ApiParam(value = "主键", required = true)   
 
-APP上加註解@EnableSwagger2
-类上使用
-@Api(description = "客服的控制器")
-方法上
-@ApiOperation(value="测试连通")
-参数对象的属性上
-@ApiModelProperty("企业ID不能为空")
-参数对象上
-@ApiModel("demoDto测试")
-参数上
-@ApiParam(value = "主键", required = true)
+http://localhost:9300/springboot/swagger-ui.html#/   
 
-http://localhost:9300/springboot/swagger-ui.html#/
-
-参考 com/zhenzhen/demo/springboot/controller/HelloController.java
-   com/zhenzhen/demo/springboot/entity/Hello.java
+参考 com/zhenzhen/demo/springboot/controller/HelloController.java   
+   com/zhenzhen/demo/springboot/entity/Hello.java   
    
-6返回前端的日期格式化
-spring:
-  jackson:
-    time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
+6返回前端的日期格式化   
+spring:   
+  jackson:   
+    time-zone: GMT+8   
+    date-format: yyyy-MM-dd HH:mm:ss   
 
-7.使用 lombok
-maven上下载lombookjar包
-java -jar lombook。jar执行，绑定eclipse的安装路径
-<dependency>
-	<groupId>org.projectlombok</groupId>
-	<artifactId>lombok</artifactId>
-</dependency>
+7.使用 lombok   
+maven上下载lombookjar包   
+java -jar lombook。jar执行，绑定eclipse的安装路径   
+<dependency>   
+	<groupId>org.projectlombok</groupId>   
+	<artifactId>lombok</artifactId>   
+</dependency>   
 
-@Data
+@Data  
 
-@Slf4j
+@Slf4j  
 
-8使用druid数据库连接池
+8使用druid数据库连接池  
 <dependency>
 	<groupId>com.alibaba</groupId>
 	<artifactId>druid-spring-boot-starter</artifactId>
@@ -140,12 +140,12 @@ spring:
                     config:
                         multi-statement-allow: true
  
- 监控路径
-http://localhost:9300/springboot/druid
+ 监控路径  
+http://localhost:9300/springboot/druid   
 
-9代码中的常量使用枚举类型
+9代码中的常量使用枚举类型   
 
-public enum ResultEnum {
+public enum ResultEnum {   
 	
 	UNKONW_ERROR(-1,"未知错误"),
 	SUCCESS(0,"成功"),
@@ -170,10 +170,10 @@ public enum ResultEnum {
 	}
 	public void setMsg(String msg) {
 		this.msg = msg;
-	}
-}
+	}  
+}   
 
-10配置跨域
+10配置跨域   
 package com.zhenzhen.demo.springboot.filter;
 import java.io.IOException;
 
@@ -216,10 +216,9 @@ public class HeadersCORSFilter implements Filter {
 
 	public void init(FilterConfig fConfig) throws ServletException {}
 
+}   
 
-}
-
-11 使用BeanValidator
+11 使用BeanValidator   
 <dependency>
 	<groupId>com.google.code.gson</groupId>
 	<artifactId>gson</artifactId>
@@ -314,7 +313,7 @@ public class BeanValidatorUtil {
     }
 }
 
-使用
+使用  
 package com.zhenzhen.demo.springboot.condition;
 
 import java.util.Date;
@@ -358,7 +357,7 @@ public class HelloCondition {
 	}
 }
 
-12 封装result和统一异常处理
+12 封装result和统一异常处理   
 package com.zhenzhen.demo.springboot.exception;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -506,10 +505,10 @@ public class Result {
 	}
 	
 	
-}
+}   
 
 
-13使用aop统一处理参数和返回值日志
+13使用aop统一处理参数和返回值日志   
 package com.zhenzhen.demo.springboot.common.aspect;
 
 import javax.servlet.http.HttpServletRequest;
@@ -561,10 +560,10 @@ public class ControllerMethodExecutionLogAspect {
         log.info("********request completed. url:{}, cost:{}", url, end - start);
 	}
 
-}
+}   
 
 
-14 配置finalname
+14 配置finalname   
 
 <build>
     <finalName>sprintbootdemo</finalName>
