@@ -12,9 +12,9 @@ web,mysql,jdbc,redis
 application.properties 重命名为application.yml   
 复制三份   
 application.yml   
-spring:   
-  profiles:   
-    active: dev   
+spring:      
+  profiles:      
+    active: dev      
 application-dev.yml   
 application-test.yml   
 application-prod.yml    
@@ -564,11 +564,11 @@ public class ControllerMethodExecutionLogAspect {
 
 
 14 配置finalname   
-
-<build>
-    <finalName>sprintbootdemo</finalName>
-	<plugins>
-		<plugin>
+   
+<build>   
+    <finalName>sprintbootdemo</finalName>   
+	<plugins>   
+		<plugin>   
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-maven-plugin</artifactId>
 		</plugin>
