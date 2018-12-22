@@ -1,11 +1,4 @@
-1.创建springboot项目   
-https://start.spring.io/   
-group com.zhenzhen.demo   
-Artifact springboot   
-Search for dependencies    
-web,mysql,jdbc,redis   
-
-2.拆分环境test、dev、prod   
+1.拆分环境test、dev、prod   
 application.properties 重命名为application.yml   
 复制三份   
 application.yml
@@ -19,17 +12,7 @@ application-test.yml
 application-prod.yml    
 java -jar xxx.jar --spring.profiles.active=dev    
 
-3.跳过测试maven插件  
-``` 
-<plugin>   
-	<groupId>org.apache.maven.plugins</groupId>   
-	<artifactId>maven-surefire-plugin</artifactId>   
-	<configuration>   
-		<skipTests>true</skipTests>   
-	</configuration>   
-</plugin>   
-```
-4.热部署
+2.热部署
 ```    
 <dependency>  
     <groupId>org.springframework.boot</groupId>  
@@ -37,7 +20,7 @@ java -jar xxx.jar --spring.profiles.active=dev
     <optional>true</optional><!-- optional=true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 -->   
 </dependency>     
 ``` 
-5.使用swagger 
+3.使用swagger 
 ```   
 <dependency>
 	<groupId>io.springfox</groupId>  
@@ -60,21 +43,19 @@ APP上加註解@EnableSwagger2
 参数对象上   
 @ApiModel("demoDto测试")   
 参数上   
-@ApiParam(value = "主键", required = true)   
+@ApiParam(value = "主键", required = true)  
+ 
 
 http://localhost:9300/springboot/swagger-ui.html#/   
-
-参考 com/zhenzhen/demo/springboot/controller/HelloController.java   
-   com/zhenzhen/demo/springboot/entity/Hello.java   
    
-6返回前端的日期格式化  
+4.返回前端的日期格式化  
 ```  
 spring:   
   jackson:   
     time-zone: GMT+8   
     date-format: yyyy-MM-dd HH:mm:ss   
 ``` 
-7.使用 lombok   
+5.使用 lombok   
 maven上下载lombookjar包   
 java -jar lombook。jar执行，绑定eclipse的安装路径  
 ```  
@@ -88,7 +69,7 @@ java -jar lombook。jar执行，绑定eclipse的安装路径
 
 @Slf4j  
 
-8使用druid数据库连接池 
+6.使用druid数据库连接池 
 ```  
 <dependency>
 	<groupId>com.alibaba</groupId>
@@ -152,7 +133,7 @@ spring:
  监控路径  
 http://localhost:9300/springboot/druid   
 
-9代码中的常量使用枚举类型   
+7.代码中的常量使用枚举类型   
 ``` 
 public enum ResultEnum {   
 	
@@ -183,7 +164,7 @@ public enum ResultEnum {
 }
 ```    
 
-10配置跨域 
+9.配置跨域 
 ```   
 package com.zhenzhen.demo.springboot.filter;
 import java.io.IOException;
@@ -230,7 +211,7 @@ public class HeadersCORSFilter implements Filter {
 }
 ```    
 
-11 使用BeanValidator 
+9. 使用BeanValidator 
 
 ```   
 package com.zhenzhen.demo.springboot.common.utils;
@@ -340,7 +321,7 @@ public class HelloController {
 	}
 }
 ``` 
-12 封装result和统一异常处理  
+10. 封装result和统一异常处理  
 ```  
 package com.zhenzhen.demo.springboot.exception;
 
@@ -493,7 +474,7 @@ public class Result {
 ```  
 
 
-13使用aop统一处理参数和返回值日志  
+11.使用aop统一处理参数和返回值日志  
 ```  
 package com.zhenzhen.demo.springboot.common.aspect;
 
@@ -550,7 +531,7 @@ public class ControllerMethodExecutionLogAspect {
 ```   
 
 
-14 配置finalname   
+12.配置包名和跳过测试   
 
 ```  
 <build>   
