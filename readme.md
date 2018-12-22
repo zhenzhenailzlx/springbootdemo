@@ -231,40 +231,11 @@ public class HeadersCORSFilter implements Filter {
 ```    
 
 11 使用BeanValidator 
+
 ```   
-<dependency>
-	<groupId>com.google.code.gson</groupId>
-	<artifactId>gson</artifactId>
-</dependency>
-<dependency>
-	<groupId>commons-collections</groupId>
-	<artifactId>commons-collections</artifactId>
-</dependency>
-<dependency>
-	<groupId>commons-codec</groupId>
-	<artifactId>commons-codec</artifactId>
-</dependency>
-<dependency>
-	<groupId>org.apache.commons</groupId>
-	<artifactId>commons-lang3</artifactId>
-	<version>3.4</version>
-</dependency>
-<dependency>
-    <groupId>com.google.guava</groupId>
-    <artifactId>guava</artifactId>
-    <version>16.0</version>
-</dependency>
+package com.zhenzhen.demo.springboot.common.utils;
 
-``` 
-
-``` 
-package com.zhenzhen.demo.springboot.utils;
-
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -272,63 +243,28 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.apache.commons.collections.MapUtils;
-
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 public class BeanValidatorUtil {
 	private static ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
 
-    public static <T> Map<String, String> validate(T t, Class... groups) {
-        Validator validator = validatorFactory.getValidator();
-        Set validateResult = validator.validate(t, groups);
-        if (validateResult.isEmpty()) {
-            return Collections.emptyMap();
-        } else {
-            LinkedHashMap errors = Maps.newLinkedHashMap();
-            Iterator iterator = validateResult.iterator();
-            while (iterator.hasNext()) {
-                ConstraintViolation violation = (ConstraintViolation)iterator.next();
-                errors.put(violation.getPropertyPath().toString(), violation.getMessage());
-            }
-            return errors;
-        }
-    }
-
-    public static Map<String, String> validateList(Collection<?> collection) {
-        Preconditions.checkNotNull(collection);
-        Iterator iterator = collection.iterator();
-        Map errors;
-
-        do {
-            if (!iterator.hasNext()) {
-                return Collections.emptyMap();
-            }
-            Object object = iterator.next();
-            errors = validate(object, new Class[0]);
-        } while (errors.isEmpty());
-
-        return errors;
-    }
-
-    public static Map<String, String> validateObject(Object first, Object... objects) {
-        if (objects != null && objects.length > 0) {
-            return validateList(Lists.asList(first, objects));
-        } else {
-            return validate(first, new Class[0]);
-        }
-    }
-
-    public static void check(Object param) throws RuntimeException {
-        Map<String, String> map = BeanValidatorUtil.validateObject(param);
-        if (MapUtils.isNotEmpty(map)) {
-            throw new RuntimeException(map.toString());
-        }
-    }
+	public static String check(Object object) throws RuntimeException {
+		StringBuffer resutlStr = new StringBuffer();
+		Validator validator = validatorFactory.getValidator();
+		Set<ConstraintViolation<Object>> validateResult = validator.validate(object,new Class[0]);
+		if (!validateResult.isEmpty()) {
+			Iterator<ConstraintViolation<Object>> iterator = validateResult.iterator();
+			while (iterator.hasNext()) {
+				ConstraintViolation<Object> violation = iterator.next();
+				resutlStr.append(violation.getMessage()+",");
+			}
+		}
+		if(resutlStr.length()>0) {
+			resutlStr.deleteCharAt(resutlStr.length()-1);
+			return resutlStr.toString();
+		}
+		return null;
+	}
 }
-``` 
+```   
 
 使用 
 ```  
@@ -372,6 +308,35 @@ public class HelloCondition {
 		endDate.setMinutes(59);
 		endDate.setSeconds(59);
 		this.endDate = endDate;
+	}
+}
+
+package com.zhenzhen.demo.springboot.controller;
+
+import java.util.Date;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.zhenzhen.demo.springboot.common.utils.BeanValidatorUtil;
+import com.zhenzhen.demo.springboot.condition.HelloCondition;
+import com.zhenzhen.demo.springboot.dto.HelloDto;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.java.Log;
+
+@RestController
+@Api(description = "hello的控制器")
+@Log
+public class HelloController {
+
+	@GetMapping("/hello")
+	@ApiOperation(value="hello 方法")
+	public HelloDto hello(HelloCondition helloCondition) {
+		BeanValidatorUtil.check(helloCondition);
+		log.info("输入参数"+helloCondition);
+		return new HelloDto("真哥", new Date());
 	}
 }
 ``` 
