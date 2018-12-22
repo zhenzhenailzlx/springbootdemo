@@ -1,8 +1,3 @@
-# springbootdemo 
-测试
- 
-springboot的demo项目  
-
 1.创建springboot项目   
 https://start.spring.io/   
 group com.zhenzhen.demo   
@@ -13,10 +8,12 @@ web,mysql,jdbc,redis
 2.拆分环境test、dev、prod   
 application.properties 重命名为application.yml   
 复制三份   
-application.yml   
+application.yml
+```   
 spring:      
   profiles:      
-    active: dev      
+    active: dev
+```      
 application-dev.yml   
 application-test.yml   
 application-prod.yml    
