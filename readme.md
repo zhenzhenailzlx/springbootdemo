@@ -19,7 +19,8 @@ application-test.yml
 application-prod.yml    
 java -jar xxx.jar --spring.profiles.active=dev    
 
-3.跳过测试   
+3.跳过测试maven插件  
+``` 
 <plugin>   
 	<groupId>org.apache.maven.plugins</groupId>   
 	<artifactId>maven-surefire-plugin</artifactId>   
@@ -27,15 +28,17 @@ java -jar xxx.jar --spring.profiles.active=dev
 		<skipTests>true</skipTests>   
 	</configuration>   
 </plugin>   
-
-4.热部署   
+```
+4.热部署
+```    
 <dependency>  
     <groupId>org.springframework.boot</groupId>  
     <artifactId>spring-boot-devtools</artifactId>  
     <optional>true</optional><!-- optional=true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 -->   
 </dependency>     
-
-5.使用swagger   
+``` 
+5.使用swagger 
+```   
 <dependency>
 	<groupId>io.springfox</groupId>  
 	<artifactId>springfox-swagger2</artifactId>   
@@ -46,7 +49,7 @@ java -jar xxx.jar --spring.profiles.active=dev
 	<artifactId>springfox-swagger-ui</artifactId>   
 	<version>2.8.0</version>   
 </dependency>   
-
+``` 
 APP上加註解@EnableSwagger2   
 类上使用   
 @Api(description = "客服的控制器")   
@@ -64,25 +67,29 @@ http://localhost:9300/springboot/swagger-ui.html#/
 参考 com/zhenzhen/demo/springboot/controller/HelloController.java   
    com/zhenzhen/demo/springboot/entity/Hello.java   
    
-6返回前端的日期格式化   
+6返回前端的日期格式化  
+```  
 spring:   
   jackson:   
     time-zone: GMT+8   
     date-format: yyyy-MM-dd HH:mm:ss   
-
+``` 
 7.使用 lombok   
 maven上下载lombookjar包   
-java -jar lombook。jar执行，绑定eclipse的安装路径   
+java -jar lombook。jar执行，绑定eclipse的安装路径  
+```  
 <dependency>   
 	<groupId>org.projectlombok</groupId>   
 	<artifactId>lombok</artifactId>   
-</dependency>   
+</dependency>  
+```  
 
 @Data  
 
 @Slf4j  
 
-8使用druid数据库连接池  
+8使用druid数据库连接池 
+```  
 <dependency>
 	<groupId>com.alibaba</groupId>
 	<artifactId>druid-spring-boot-starter</artifactId>
@@ -102,9 +109,11 @@ java -jar lombook。jar执行，绑定eclipse的安装路径
 	<groupId>mysql</groupId>
 	<artifactId>mysql-connector-java</artifactId>
 </dependency>
+``` 
 
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 
+``` 
 spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
@@ -138,12 +147,13 @@ spring:
                 wall:
                     config:
                         multi-statement-allow: true
+``` 
  
  监控路径  
 http://localhost:9300/springboot/druid   
 
 9代码中的常量使用枚举类型   
-
+``` 
 public enum ResultEnum {   
 	
 	UNKONW_ERROR(-1,"未知错误"),
@@ -170,9 +180,11 @@ public enum ResultEnum {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}  
-}   
+}
+```    
 
-10配置跨域   
+10配置跨域 
+```   
 package com.zhenzhen.demo.springboot.filter;
 import java.io.IOException;
 
@@ -215,9 +227,11 @@ public class HeadersCORSFilter implements Filter {
 
 	public void init(FilterConfig fConfig) throws ServletException {}
 
-}   
+}
+```    
 
-11 使用BeanValidator   
+11 使用BeanValidator 
+```   
 <dependency>
 	<groupId>com.google.code.gson</groupId>
 	<artifactId>gson</artifactId>
@@ -241,6 +255,9 @@ public class HeadersCORSFilter implements Filter {
     <version>16.0</version>
 </dependency>
 
+``` 
+
+``` 
 package com.zhenzhen.demo.springboot.utils;
 
 import java.util.Collection;
@@ -311,8 +328,10 @@ public class BeanValidatorUtil {
         }
     }
 }
+``` 
 
-使用  
+使用 
+```  
 package com.zhenzhen.demo.springboot.condition;
 
 import java.util.Date;
@@ -355,8 +374,9 @@ public class HelloCondition {
 		this.endDate = endDate;
 	}
 }
-
-12 封装result和统一异常处理   
+``` 
+12 封装result和统一异常处理  
+```  
 package com.zhenzhen.demo.springboot.exception;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -504,10 +524,12 @@ public class Result {
 	}
 	
 	
-}   
+}  
+```  
 
 
-13使用aop统一处理参数和返回值日志   
+13使用aop统一处理参数和返回值日志  
+```  
 package com.zhenzhen.demo.springboot.common.aspect;
 
 import javax.servlet.http.HttpServletRequest;
@@ -559,11 +581,13 @@ public class ControllerMethodExecutionLogAspect {
         log.info("********request completed. url:{}, cost:{}", url, end - start);
 	}
 
-}   
+} 
+```   
 
 
 14 配置finalname   
-   
+
+```  
 <build>   
     <finalName>sprintbootdemo</finalName>   
 	<plugins>   
@@ -580,3 +604,5 @@ public class ControllerMethodExecutionLogAspect {
 		</plugin>
 	</plugins>
 </build>
+
+``` 
