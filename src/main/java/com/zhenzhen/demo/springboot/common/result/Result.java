@@ -29,6 +29,5 @@ public class Result {
 		result.setMessage(msg);
 		return result;
 	}
-
 	
 }

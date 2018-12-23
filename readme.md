@@ -323,14 +323,75 @@ public class HelloController {
 ``` 
 10. 封装result和统一异常处理  
 ```  
-package com.zhenzhen.demo.springboot.exception;
+package com.zhenzhen.demo.springboot.common.exception;
+
+public class SprintBootDemoException extends RuntimeException{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1092798459937082802L;
+
+	private String code;
+	
+	public SprintBootDemoException(String code,String msg) {
+		super(msg);
+		this.code = code;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
+}
+
+
+package com.zhenzhen.demo.springboot.common.result;
+
+import lombok.Data;
+
+@Data
+public class Result {
+
+	//1 表示成功，0表示失败
+	private String code;
+	private Object data;
+	private String message;
+	
+	public static Result success() {
+		Result result = new Result();
+		result.setCode("1");
+		return result;
+	}
+
+	public static Result success(Object object) {
+		Result result = new Result();
+		result.setCode("1");
+		result.setData(object);
+		return result;
+	}
+	
+	public static Result error(String code,String msg ) {
+		Result result = new Result();
+		result.setCode(code);
+		result.setMessage(msg);
+		return result;
+	}
+	
+}
+
+
+package com.zhenzhen.demo.springboot.common.exception;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhenzhen.demo.springboot.common.result.Result;
-import com.zhenzhen.demo.springboot.common.utils.ResultUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -342,126 +403,17 @@ public class ExceptionHandle {
 	@ExceptionHandler(value = Exception.class)
 	@ResponseBody
 	public Result handle(Exception e) {
-		if(e instanceof SprintBootException) {
-			SprintBootException sprintBootException = (SprintBootException)e;
-			return ResultUtil.error(sprintBootException.getCode(), sprintBootException.getMessage());
+		if(e instanceof SprintBootDemoException) {
+			SprintBootDemoException sprintBootException = (SprintBootDemoException)e;
+			return Result.error(sprintBootException.getCode(), sprintBootException.getMessage());
 		}else{
 			log.error(e.toString());
-			return ResultUtil.error("-1", "未知错误");
+			return Result.error("-1", "未知错误");
 		}
 	}
 }
 
-package com.zhenzhen.demo.springboot.common.utils;
 
-import com.zhenzhen.demo.springboot.common.result.Result;
-
-public class ResultUtil {
-	
-	public static Result success(Object object) {
-		Result result = new Result();
-		result.setCode("1");
-		result.setData(object);
-		result.setMessage("成功");
-		return result;
-	}
-	
-	public static Result success() {
-		Result result = new Result();
-		result.setCode("1");
-		result.setMessage("成功");
-		return result;
-	}
-	public static Result success(String code,String msg) {
-		Result result = new Result();
-		result.setCode(code);
-		result.setMessage(msg);
-		return result;
-	}
-	
-	public static Result success(String code,String msg,Object object) {
-		Result result = new Result();
-		result.setCode(code);
-		result.setMessage(msg);
-		result.setData(object);
-		return result;
-	}
-	
-	public static Result error(String code,String msg ) {
-		Result result = new Result();
-		result.setCode(code);
-		result.setMessage(msg);
-		return result;
-	}
-
-}
-
-
-package com.zhenzhen.demo.springboot.common.result;
-public class Result {
-
-	//1 表示成功，0表示失败
-	private String code;
-	private Object data;
-	private String message;
-	
-	
-	
-	public Result() {
-		super();
-	}
-
-	public Result(String code) {
-		super();
-		this.code = code;
-	}
-	
-
-	public Result(Object data) {
-		super();
-		this.code = "1";
-		this.data = data;
-	}
-
-
-
-
-	public Result(String code, Object data) {
-		super();
-		this.code = code;
-		this.data = data;
-	}
-
-	
-	public Result(String code, String message) {
-		super();
-		this.code = code;
-		this.message = message;
-	}
-
-
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	
-	public Object getData() {
-		return data;
-	}
-	public void setData(Object data) {
-		this.data = data;
-	}
-	public String getMessage() {
-		return message;
-	}
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	
-}  
 ```  
 
 
