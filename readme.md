@@ -34,16 +34,10 @@ java -jar xxx.jar --spring.profiles.active=dev
 </dependency>   
 ``` 
 APP上加註解@EnableSwagger2   
-类上使用   
-@Api(description = "客服的控制器")   
-方法上   
-@ApiOperation(value="测试连通")   
-参数对象的属性上   
-@ApiModelProperty("企业ID不能为空")   
-参数对象上   
-@ApiModel("demoDto测试")   
-参数上   
-@ApiParam(value = "主键", required = true)  
+
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/controller/HelloController.java
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/condition/HelloCondition.java
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/dto/HelloDto.java
  
 
 http://localhost:9300/springboot/swagger-ui.html#/   
@@ -135,342 +129,34 @@ http://localhost:9300/springboot/druid
 
 7.代码中的常量使用枚举类型   
 ``` 
-public enum ResultEnum {   
-	
-	UNKONW_ERROR(-1,"未知错误"),
-	SUCCESS(0,"成功"),
-	
-	;
-	private Integer code;
-	private String msg;
-	
-	
-	private ResultEnum(Integer code, String msg) {
-		this.code = code;
-		this.msg = msg;
-	}
-	public Integer getCode() {
-		return code;
-	}
-	public void setCode(Integer code) {
-		this.code = code;
-	}
-	public String getMsg() {
-		return msg;
-	}
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}  
-}
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/constants/ResultEunm.java
 ```    
 
-9.配置跨域 
+8.配置跨域 
 ```   
-package com.zhenzhen.demo.springboot.filter;
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.stereotype.Component;
-@Component
-public class HeadersCORSFilter implements Filter {
-	
-
-    public HeadersCORSFilter() {}
-
-	public void destroy() {}
-
-	public void doFilter(ServletRequest request, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse resp = (HttpServletResponse) servletResponse;
-        String reqUrl = req.getHeader("Origin");
-        this.crossDomain(req, resp, reqUrl);
-        chain.doFilter(req, resp);
-	}
-	
-	private void crossDomain(HttpServletRequest request, HttpServletResponse response, String url) {
-        response.setHeader("Content-type", "text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Origin", url );
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS,PUT,DELETE");
-        response.setHeader("Access-Control-Allow-Headers",
-                "Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With");
-    }
-
-	public void init(FilterConfig fConfig) throws ServletException {}
-
-}
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/filter/HeadersCORSFilter.java
 ```    
 
 9. 使用BeanValidator 
 
 ```   
-package com.zhenzhen.demo.springboot.common.utils;
-
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
-public class BeanValidatorUtil {
-	private static ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-
-	public static String check(Object object) throws RuntimeException {
-		StringBuffer resutlStr = new StringBuffer();
-		Validator validator = validatorFactory.getValidator();
-		Set<ConstraintViolation<Object>> validateResult = validator.validate(object,new Class[0]);
-		if (!validateResult.isEmpty()) {
-			Iterator<ConstraintViolation<Object>> iterator = validateResult.iterator();
-			while (iterator.hasNext()) {
-				ConstraintViolation<Object> violation = iterator.next();
-				resutlStr.append(violation.getMessage()+",");
-			}
-		}
-		if(resutlStr.length()>0) {
-			resutlStr.deleteCharAt(resutlStr.length()-1);
-			return resutlStr.toString();
-		}
-		return null;
-	}
-}
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/utils/BeanValidatorUtil.java
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/condition/HelloCondition.java
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/controller/HelloController.java
 ```   
 
-使用 
-```  
-package com.zhenzhen.demo.springboot.condition;
-
-import java.util.Date;
-
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
-@Data
-public class HelloCondition {
-	@ApiModelProperty(value = "名字",required = true)
-	@NotEmpty(message = "名字不能为空")
-	private String name;
-	
-	@ApiModelProperty(value = "开始日期",required = true)
-	@NotNull(message = "开始时间不能为空")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date startDate;
-	
-	@ApiModelProperty(value = "结束日期",required = true)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@NotNull(message = "接收时间不能为空")
-	private Date endDate;
-	
-	public void setStartDate(Date startDate) {
-		startDate.setHours(0);
-		startDate.setMinutes(0);
-		startDate.setSeconds(0);
-		this.startDate = startDate;
-	}
-	
-	public void setEndDate(Date endDate) {
-		endDate.setHours(23);
-		endDate.setMinutes(59);
-		endDate.setSeconds(59);
-		this.endDate = endDate;
-	}
-}
-
-package com.zhenzhen.demo.springboot.controller;
-
-import java.util.Date;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.zhenzhen.demo.springboot.common.utils.BeanValidatorUtil;
-import com.zhenzhen.demo.springboot.condition.HelloCondition;
-import com.zhenzhen.demo.springboot.dto.HelloDto;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.extern.java.Log;
-
-@RestController
-@Api(description = "hello的控制器")
-@Log
-public class HelloController {
-
-	@GetMapping("/hello")
-	@ApiOperation(value="hello 方法")
-	public HelloDto hello(HelloCondition helloCondition) {
-		BeanValidatorUtil.check(helloCondition);
-		log.info("输入参数"+helloCondition);
-		return new HelloDto("真哥", new Date());
-	}
-}
 ``` 
 10. 封装result和统一异常处理  
 ```  
-package com.zhenzhen.demo.springboot.common.exception;
-
-public class SprintBootDemoException extends RuntimeException{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1092798459937082802L;
-
-	private String code;
-	
-	public SprintBootDemoException(String code,String msg) {
-		super(msg);
-		this.code = code;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-	
-}
-
-
-package com.zhenzhen.demo.springboot.common.result;
-
-import lombok.Data;
-
-@Data
-public class Result {
-
-	//1 表示成功，0表示失败
-	private String code;
-	private Object data;
-	private String message;
-	
-	public static Result success() {
-		Result result = new Result();
-		result.setCode("1");
-		return result;
-	}
-
-	public static Result success(Object object) {
-		Result result = new Result();
-		result.setCode("1");
-		result.setData(object);
-		return result;
-	}
-	
-	public static Result error(String code,String msg ) {
-		Result result = new Result();
-		result.setCode(code);
-		result.setMessage(msg);
-		return result;
-	}
-	
-}
-
-
-package com.zhenzhen.demo.springboot.common.exception;
-
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.zhenzhen.demo.springboot.common.result.Result;
-
-import lombok.extern.slf4j.Slf4j;
-
-@ControllerAdvice
-@Slf4j
-public class ExceptionHandle {
-
-
-	@ExceptionHandler(value = Exception.class)
-	@ResponseBody
-	public Result handle(Exception e) {
-		if(e instanceof SprintBootDemoException) {
-			SprintBootDemoException sprintBootException = (SprintBootDemoException)e;
-			return Result.error(sprintBootException.getCode(), sprintBootException.getMessage());
-		}else{
-			log.error(e.toString());
-			return Result.error("-1", "未知错误");
-		}
-	}
-}
-
-
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/result/Result.java
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/exception/ExceptionHandle.java
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/exception/SprintBootDemoException.java
 ```  
 
 
 11.使用aop统一处理参数和返回值日志  
 ```  
-package com.zhenzhen.demo.springboot.common.aspect;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Aspect
-@Component
-@Slf4j
-public class ControllerMethodExecutionLogAspect {
-	
-	private static final String START_TIME = "requestStartTime";
-
-	@Pointcut("execution(public * com.zhenzhen.demo.*.controller.*.*(..))")
-	public void log() {
-	}
-	
-	@Before("log()")
-	public void doStart(JoinPoint joinpoint) {
-		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		HttpServletRequest req = attributes.getRequest();
-		long start = System.currentTimeMillis();
-		req.setAttribute(START_TIME, start);
-		log.info("********request start,url = {}",req.getRequestURL().toString());
-		log.info("Method = {}",req.getMethod());
-		log.info("ip = {}",req.getRemoteAddr());
-		log.info("class_method = {}",joinpoint.getSignature().getDeclaringTypeName()+"."+joinpoint.getSignature().getName());
-		log.info("args = {}",joinpoint.getArgs());
-		
-	}
-	
-	@AfterReturning(returning = "object",pointcut="log()")
-	public void doEnd(Object object) {
-        log.info("args = {}",object.toString());
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest req = attributes.getRequest();
-        String url = req.getRequestURL().toString();
-		long start = (Long) req.getAttribute(START_TIME);
-        long end = System.currentTimeMillis();
-        log.info("********request completed. url:{}, cost:{}", url, end - start);
-	}
-
-} 
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/aspect/ControllerMethodExecutionLogAspect.java
 ```   
 
 
