@@ -568,3 +568,6 @@ public class ControllerMethodExecutionLogAspect {
 </generatorConfiguration>
 	
 ``` 
+14.baseDao
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/dao/BaseDao.java
+/springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/dao/JsonRowMapper.java
