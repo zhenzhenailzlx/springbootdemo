@@ -432,15 +432,6 @@ public class Result {
 		this.data = data;
 	}
 
-
-
-	public Result(String code, Object data, String message) {
-		super();
-		this.code = code;
-		this.data = data;
-		this.message = message;
-	}
-	
 	
 	public Result(String code, String message) {
 		super();

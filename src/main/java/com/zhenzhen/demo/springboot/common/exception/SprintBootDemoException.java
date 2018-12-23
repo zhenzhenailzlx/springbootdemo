@@ -1,6 +1,6 @@
 package com.zhenzhen.demo.springboot.common.exception;
 
-public class SprintBootException extends RuntimeException{
+public class SprintBootDemoException extends RuntimeException{
 
 	/**
 	 * 
@@ -9,7 +9,7 @@ public class SprintBootException extends RuntimeException{
 
 	private String code;
 	
-	public SprintBootException(String code,String msg) {
+	public SprintBootDemoException(String code,String msg) {
 		super(msg);
 		this.code = code;
 	}
