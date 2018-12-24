@@ -88,6 +88,7 @@ java -jar lombook。jar执行，绑定eclipse的安装路径
 
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 
+配置
 ``` 
 spring:
     datasource:
