@@ -140,7 +140,7 @@ http://localhost:9300/springboot/druid
 
 9.使用BeanValidator 
 
-```   
+```
 /springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/utils/BeanValidatorUtil.java
 /springboot-demo/src/main/java/com/zhenzhen/demo/springboot/condition/HelloCondition.java
 /springboot-demo/src/main/java/com/zhenzhen/demo/springboot/controller/HelloController.java
