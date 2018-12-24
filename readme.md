@@ -138,7 +138,7 @@ http://localhost:9300/springboot/druid
 /springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/filter/HeadersCORSFilter.java
 ```    
 
-9. 使用BeanValidator 
+9.使用BeanValidator 
 
 ```   
 /springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/utils/BeanValidatorUtil.java
@@ -146,7 +146,6 @@ http://localhost:9300/springboot/druid
 /springboot-demo/src/main/java/com/zhenzhen/demo/springboot/controller/HelloController.java
 ```   
 
-``` 
 10. 封装result和统一异常处理  
 ```  
 /springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/result/Result.java
