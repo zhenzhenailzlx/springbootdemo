@@ -219,7 +219,7 @@ http://localhost:9300/springboot/druid
 	</executions>
 	<configuration>
 		<configurationFile>${basedir}/src/main/resources/generator/generatorConfig.xml</configurationFile>
-		《！--只使用一次-->
+		<!--只使用一次-->
 		<overwrite>false</overwrite>
 		<verbose>false</verbose>
 	</configuration>
@@ -255,14 +255,18 @@ http://localhost:9300/springboot/druid
 	
 ``` 
 14.baseDao
+
+``` 
 /springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/dao/BaseDao.java
 /springboot-demo/src/main/java/com/zhenzhen/demo/springboot/common/dao/JsonRowMapper.java
-
+``` 
 
 15.logback
+``` 
 /springboot-demo/src/main/resources/logback-spring.xml
 
 使用logback 保存到数据库
 在jar包中找到sql建表语句
 logback-classic-1.2.3-sources.jar
 ch.qos.logback.classic.db.script.mysql.sql
+``` 
