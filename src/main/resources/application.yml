@@ -4,6 +4,11 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: NON_NULL    
+  http:
+    encoding:
+      charset: UTF-8
+      
     
     
 logging:

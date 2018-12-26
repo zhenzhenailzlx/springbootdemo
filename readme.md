@@ -42,12 +42,18 @@ APP上加註解@EnableSwagger2
 
 http://localhost:9300/springboot/swagger-ui.html#/   
    
-4.返回前端的日期格式化  
+4.返回前端的日期格式化、时区、字符集  
 ```  
-spring:   
-  jackson:   
-    time-zone: GMT+8   
-    date-format: yyyy-MM-dd HH:mm:ss   
+spring:
+  profiles:
+    active: dev
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: NON_NULL    
+  http:
+    encoding:
+      charset: UTF-8
 ``` 
 5.使用 lombok   
 maven上下载lombookjar包   
