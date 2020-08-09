@@ -8,7 +8,41 @@ spring:
   http:
     encoding:
       charset: UTF-8
-      
+
+  quartz:
+    #相关属性配置
+    properties:
+      org:
+        quartz:
+          dataSource:
+            myDS:
+              driver: com.mysql.jdbc.Driver
+              URL: jdbc:mysql://192.168.1.25:3306/quartz?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+              user: root
+              password: yzaizlx21
+              maxConnections: 5
+              validationQuery: SELECT 1
+          scheduler:
+            instanceName: clusteredScheduler
+            instanceId: AUTO
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: QRTZ_
+            isClustered: true
+            clusterCheckinInterval: 10000
+            useProperties: false
+            dataSource: myDS
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+    #数据库方式
+    job-store-type: jdbc
+    #初始化表结构
+    jdbc:
+      initialize-schema: never      
     
     
 logging:
