@@ -1,6 +1,5 @@
 package com.zhenzhen.demo.springboot;
 
-import org.junit.Test;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -26,6 +25,8 @@ public class QuartzTest {
             // define the job and tie it to our HelloJob class
             JobDetail jobDetail = JobBuilder.newJob(MyJob.class)
                     .withIdentity("myJob1","myJobGroup1")
+                    .usingJobData("testkey","testValue")
+                    .usingJobData("testkey2",1)
                     .storeDurably()
                     .build();
 
